@@ -1,5 +1,5 @@
 # capa de servicio/lógica de negocio
-import requests
+from app.layers.utilities.translator import fromRequestIntoCard
 from ..transport import transport
 from ...config import config
 from ..persistence import repositories
@@ -10,34 +10,14 @@ from django.contrib.auth import get_user
 def getAllImages():
     # debe ejecutar los siguientes pasos:
     # 1) traer un listado de imágenes crudas desde la API (ver transport.py)
-    Cards = []
-    for i in range(1, 20):
-        response = requests.get(config.STUDENTS_REST_API_URL + str(i))
+    raw_list = transport.getAllImages()
     # 2) convertir cada img. en una card.
-        if not response.ok:
-            print(f"[transport.py]: error al obtener datos para el id {id}")
-            continue
-    # 3) añadirlas a un nuevo listado que, finalmente, se retornará con todas las card encontradas.
-        raw_data = response.json()
-
-        if 'detail' in raw_data and raw_data['detail'] == 'Not found.':
-            print(f"[transport.py]: no se encontraron datos para el id {id}")
-            continue
-        
-        card = {
-            "id":raw_data.get('id'),
-            "name": raw_data.get("name"),
-            "weight": raw_data.get("weight"),
-            "height": raw_data.get("height"),
-            "image": raw_data["sprites"]["other"]["official-artwork"]["front_default"],
-            "hability":raw_data['abilities'],
-            "base":raw_data.get('base_experience')
-            
-        }
-        
-        Cards.append(card)
+    Cards = []  # inicializamos un listado vacío para almacenar las cards
+    for raw_data in raw_list:
+        # 3) añadirlas a un nuevo listado que, finalmente, se retornará con todas las cards.
+        Cards.append(fromRequestIntoCard(raw_data))  
+    #retorna el listado de cards.
     return Cards
-
     pass
 
 # función que filtra según el nombre del pokemon.
