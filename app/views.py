@@ -1,5 +1,4 @@
 # capa de vista/presentación
-
 from django.shortcuts import redirect, render
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
