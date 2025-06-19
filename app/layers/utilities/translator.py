@@ -21,7 +21,9 @@ def getTypes(poke_data):
     for type in poke_data.get('types'):
         t = safe_get(type, 'type','name' )
         types.append(t)
-    return types
+        tipes = str(types)   
+        tipos = tipes.split() 
+    return tipos  
 
 # Usado cuando la información viene del template, para transformarla en una Card antes de guardarla en la base de datos.
 def fromTemplateIntoCard(templ): 
