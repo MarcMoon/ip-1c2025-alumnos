@@ -18,12 +18,15 @@ def home(request):
 
 # función utilizada en el buscador.
 def search(request):
-    name = request.POST.get('query', '')
+    name = request.POST.get('query', '').lower() # se obtiene el nombre ingresado en el buscador y se convierte a minúsculas.
 
     # si el usuario ingresó algo en el buscador, se deben filtrar las imágenes por dicho ingreso.
-    if (name != ''):
+    if (name != 'name'): 
         images = []
         favourite_list = []
+        for image in services.getAllImages():
+            if name in image.name.lower(): # se busca si el nombre ingresado está en el nombre de la imagen.
+                images.append(image)# si la imagen contiene el nombre ingresado, se agrega a la lista.
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
@@ -33,9 +36,12 @@ def search(request):
 def filter_by_type(request):
     type = request.POST.get('type', '')
 
-    if type != '':
+    if type != 'type':
         images = [] # debe traer un listado filtrado de imágenes, segun si es o contiene ese tipo.
         favourite_list = []
+        for image in services.getAllImages():
+            if type in image.types:
+                images.append(image) # si la imagen contiene el tipo ingresado, se agrega a la lista.
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
