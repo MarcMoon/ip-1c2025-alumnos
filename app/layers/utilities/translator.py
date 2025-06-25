@@ -22,7 +22,7 @@ def getTypes(poke_data):
         t = safe_get(type, 'type','name' )
         types.append(t)
         #tipes = str(types)   
-        #tipos = tipes.split() --
+        #tipos = tipes.split() 
     return types  
 
 # Usado cuando la información viene del template, para transformarla en una Card antes de guardarla en la base de datos.
